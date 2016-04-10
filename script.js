@@ -63,7 +63,10 @@ $(document).ready(function(){
 
     });
         socket.on('pinta', function (data) {
-        $('tr:nth-of-type('+(data.u.oldPos.y + 1)+') td:nth-of-type('+(data.u.oldPos.x + 1)+')').css("background-color","black");
+            console.log(data.u.oldPos.x+1);
+            console.log(data.u.oldPos.y+1);
+
+        $('tr:nth-of-type('+(data.u.oldPos.y + 1)+') td:nth-of-type('+(data.u.oldPos.x + 1)+')').css("background-color","black!important");
 
          $('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').css("background-color",data.u.color);
     });

@@ -118,31 +118,33 @@ io.sockets.on('connection', function (socket) {
         socket.on('ks', function (data) {
          var ind = data.u.index;
         var u = data.u;
-        listaUsers[ind].oldPos = u.pos;
-            console.log(u.pos);
+        listaUsers[ind].oldPos = listaUsers[ind].pos;
+//            console.log(u.pos);
 //         u.oldPos = u.pos;
 //        console.log(u.oldPos.x);
          switch (data.d) {
             case "l":
-                if(u.pos.x >= 0 && u.pos.x < 20)
+                if(listaUsers[ind].pos.x > 0)
+
                     listaUsers[ind].pos.x = listaUsers[ind].pos.x - 1;
                 break;
             case "u":
-                if(u.pos.y >= 0 && u.pos.y < 20)
+                if(listaUsers[ind].pos.y > 0)
                     listaUsers[ind].pos.y = listaUsers[ind].pos.y - 1;
 
                 break;
             case "r":
-                if(u.pos.x >= 0 && u.pos.x < 20)
+                if(listaUsers[ind].pos.x < 19)
                     listaUsers[ind].pos.x = listaUsers[ind].pos.x + 1;
                 break;
             case "d":
-                if(u.pos.y >= 0 && u.pos.y < 20)
+                if(listaUsers[ind].pos.y < 19)
                     listaUsers[ind].pos.y = listaUsers[ind].pos.y + 1;
                 break;
          }
-
-         u = listaUsers[ind];
+//            listaUsers[ind].oldPos = listaUsers[ind].pos;
+            console.log(listaUsers[ind].oldPos);
+            u = listaUsers[ind];
 
 //         console.log('SERVIDOR -> dades rebudes del client->' + u.oldPos.x);
          enviarMissatges(socket,u,"pinta");
