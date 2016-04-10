@@ -73,19 +73,36 @@ function onRequest(req, res) {
 
 
 function enviarMissatges(socket,data, emitS){
-  socket.emit(emitS, {
-            u: JSON.stringify(listaUsers)
+ if(emitS == "online"){
+    socket.emit(emitS, {
+            u: data
+
         });
-        socket.broadcast.emit(emitS, {
-            u: JSON.stringify(listaUsers)
-        });
+//        socket.broadcast.emit(emitS, {
+//            u: data
+//        });
+ } else if(emitS == "pinta"){
+//     console.log(data);
+     socket.emit(emitS, {
+        u: data
+     });
+    socket.broadcast.emit(emitS, {
+        u: data
+    });
+ }
+     else{
+         console.log("error");
+     }
 }
+
 io.sockets.on('connection', function (socket) {
 
     socket.on('reg', function (data) {
         console.log('SERVIDOR -> Login User->' + data.u);
-
-        listaUsers.push(new user(data.u));
+        var u = new user(data.u);
+        u.spawn();
+        listaUsers.push(u);
+        u.index = listaUsers.indexOf(u);
 
         MongoClient.connect(urldb, function(err, db) {
           assert.equal(null, err);
@@ -93,14 +110,46 @@ io.sockets.on('connection', function (socket) {
               db.close();
           });
         });
+//        console.log(u.pos);
+        enviarMissatges(socket,u,"online");
+//        enviarMissatges(socket,u,"pinta");
+        /**/
 
-        enviarMissatges(socket,data,"online");
+        socket.on('ks', function (data) {
+         var ind = data.u.index;
+        var u = data.u;
+        listaUsers[ind].oldPos = u.pos;
+            console.log(u.pos);
+//         u.oldPos = u.pos;
+//        console.log(u.oldPos.x);
+         switch (data.d) {
+            case "l":
+                if(u.pos.x >= 0 && u.pos.x < 20)
+                    listaUsers[ind].pos.x = listaUsers[ind].pos.x - 1;
+                break;
+            case "u":
+                if(u.pos.y >= 0 && u.pos.y < 20)
+                    listaUsers[ind].pos.y = listaUsers[ind].pos.y - 1;
+
+                break;
+            case "r":
+                if(u.pos.x >= 0 && u.pos.x < 20)
+                    listaUsers[ind].pos.x = listaUsers[ind].pos.x + 1;
+                break;
+            case "d":
+                if(u.pos.y >= 0 && u.pos.y < 20)
+                    listaUsers[ind].pos.y = listaUsers[ind].pos.y + 1;
+                break;
+         }
+
+         u = listaUsers[ind];
+
+//         console.log('SERVIDOR -> dades rebudes del client->' + u.oldPos.x);
+         enviarMissatges(socket,u,"pinta");
+    });
 
     });
-     socket.on('g', function (data) {
-        console.log('SERVIDOR -> dades rebudes del client->' + data.g);
-        enviarMissatges(socket,data);
-    });
+
      socket.on('b', function (data) {
         console.log('SERVIDOR -> dades rebudes del client->' + data.b);
         enviarMissatges(socket,data);
