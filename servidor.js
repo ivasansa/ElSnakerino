@@ -111,46 +111,65 @@ io.sockets.on('connection', function (socket) {
           });
         });
 //        console.log(u.pos);
+
+        u = listaUsers[u.index];
         enviarMissatges(socket,u,"online");
-//        enviarMissatges(socket,u,"pinta");
+        enviarMissatges(socket,u,"pinta");
         /**/
 
-        socket.on('ks', function (data) {
-         var ind = data.u.index;
-        var u = data.u;
-        listaUsers[ind].oldPos = listaUsers[ind].pos;
-//            console.log(u.pos);
-//         u.oldPos = u.pos;
-//        console.log(u.oldPos.x);
-         switch (data.d) {
-            case "l":
-                if(listaUsers[ind].pos.x > 0)
 
-                    listaUsers[ind].pos.x = listaUsers[ind].pos.x - 1;
-                break;
-            case "u":
-                if(listaUsers[ind].pos.y > 0)
-                    listaUsers[ind].pos.y = listaUsers[ind].pos.y - 1;
 
-                break;
-            case "r":
-                if(listaUsers[ind].pos.x < 19)
-                    listaUsers[ind].pos.x = listaUsers[ind].pos.x + 1;
-                break;
-            case "d":
-                if(listaUsers[ind].pos.y < 19)
-                    listaUsers[ind].pos.y = listaUsers[ind].pos.y + 1;
-                break;
-         }
+    });
+
+
+    socket.on('ks', function (data) {
+            var ind = data.u.index;
+//            var u = data.u;
 //            listaUsers[ind].oldPos = listaUsers[ind].pos;
-            console.log(listaUsers[ind].oldPos);
-            u = listaUsers[ind];
+            var oldPos = listaUsers[ind].pos;
+//            var newPosX = listaUsers[ind].pos.x;
+//            console.log(newPosX);
+            //            console.log(u.pos);
+            //         u.oldPos = u.pos;
+            //        console.log(u.oldPos.x);
+            switch (data.d) {
+                case "l":
+                    if(listaUsers[ind].pos.x > 0){
+                        listaUsers[ind].oldPos.y = listaUsers[ind].pos.y;
+                        listaUsers[ind].oldPos.x = listaUsers[ind].pos.x;
+                        listaUsers[ind].pos.x -= 1;
+                    }
+                    break;
+                case "u":
+                    if(listaUsers[ind].pos.y > 0){
+                        listaUsers[ind].oldPos.x = listaUsers[ind].pos.x;
+                        listaUsers[ind].oldPos.y = listaUsers[ind].pos.y;
+                        listaUsers[ind].pos.y -= 1;
+                    }
+                    break;
+                case "r":
+                    if(listaUsers[ind].pos.x < 19){
+                        listaUsers[ind].oldPos.y = listaUsers[ind].pos.y;
+                        listaUsers[ind].oldPos.x = listaUsers[ind].pos.x;
+                        listaUsers[ind].pos.x += 1;
+                    }
+                    break;
+                case "d":
+                    if(listaUsers[ind].pos.y < 19){
+                        listaUsers[ind].oldPos.x = listaUsers[ind].pos.x;
+                        listaUsers[ind].oldPos.y = listaUsers[ind].pos.y;
+                        listaUsers[ind].pos.y += 1;
+                    }
+                    break;
+            }
+//            listaUsers[ind].oldPos = oldPos;
+            console.log("OLD: "+listaUsers[ind].oldPos.x+" "+listaUsers[ind].oldPos.y);
+            console.log("NEW: "+listaUsers[ind].pos.x+" "+listaUsers[ind].pos.y);
+            var u = listaUsers[ind];
 
-//         console.log('SERVIDOR -> dades rebudes del client->' + u.oldPos.x);
-         enviarMissatges(socket,u,"pinta");
-    });
-
-    });
+            //         console.log('SERVIDOR -> dades rebudes del client->' + u.oldPos.x);
+            enviarMissatges(socket,u,"pinta");
+        });
 
      socket.on('b', function (data) {
         console.log('SERVIDOR -> dades rebudes del client->' + data.b);

@@ -35,7 +35,7 @@ $(document).ready(function(){
         console.log('CLIENT -> dades rebudes del servidor->' + data.u.nom);
 
         $(document).keydown(function(e) {
-            console.log(data.u.index);
+//            console.log(data.u.index);
             switch(e.which) {
                 case 37: // left
                     socket.emit('ks', {u: data.u, d: "l"});
@@ -63,12 +63,14 @@ $(document).ready(function(){
 
     });
         socket.on('pinta', function (data) {
-            console.log(data.u.oldPos.x+1);
-            console.log(data.u.oldPos.y+1);
+            console.log("OLD: "+data.u.oldPos.x+" "+data.u.oldPos.y);
+            console.log("NEW: "+data.u.pos.x+" "+data.u.pos.y);
 
-        $('tr:nth-of-type('+(data.u.oldPos.y + 1)+') td:nth-of-type('+(data.u.oldPos.x + 1)+')').css("background-color","black!important");
 
+            $('tr:nth-of-type('+(data.u.oldPos.y + 1)+') td:nth-of-type('+(data.u.oldPos.x + 1)+')').css("background-color","black");
          $('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').css("background-color",data.u.color);
+
+
     });
 
 
