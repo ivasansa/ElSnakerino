@@ -6,6 +6,7 @@ function User(nombre) {
     this.oldPos;
     this.color;
     this.index;
+    this.punt = 0;
 
     this.spawn = function() {
         function getRandomInt(min, max) {
@@ -38,7 +39,6 @@ function User(nombre) {
         this.color = getRandomColor();
     }
 }
-
 
 // export the class
 module.exports = User;

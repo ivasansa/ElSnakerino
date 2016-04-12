@@ -1,5 +1,5 @@
-var socket = io.connect('http://192.168.1.139:3000');
-
+//var socket = io.connect('http://192.168.1.139:3000');
+var socket = io.connect('http://localhost:3001');
 
 function createTable(){
 	mytable = $('<table></table>').attr({ id: "basicTable" });
@@ -62,17 +62,36 @@ $(document).ready(function(){
 
 
     });
-        socket.on('pinta', function (data) {
-            console.log("OLD: "+data.u.oldPos.x+" "+data.u.oldPos.y);
-            console.log("NEW: "+data.u.pos.x+" "+data.u.pos.y);
+    socket.on('pinta', function (data) {
+//        console.log("OLD: "+data.u.oldPos.x+" "+data.u.oldPos.y);
+//        console.log("NEW: "+data.u.pos.x+" "+data.u.pos.y);
 
 
-            $('tr:nth-of-type('+(data.u.oldPos.y + 1)+') td:nth-of-type('+(data.u.oldPos.x + 1)+')').css("background-color","black");
-         $('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').css("background-color",data.u.color);
+        $('tr:nth-of-type('+(data.u.oldPos.y + 1)+') td:nth-of-type('+(data.u.oldPos.x + 1)+')').css("background-color","black");
+     $('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').css("background-color",data.u.color);
 
 
     });
 
+    socket.on('pintaManzana', function (data) {
+//        console.log("NEW: "+data.u.pos.x+" "+data.u.pos.y);
+
+
+     //$('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').css("background-color","grey");
+
+        $('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').append( "<i class='fa fa-apple'></i>");
+
+    });
+
+    socket.on('borraManzana', function (data) {
+        console.log("borrar manzana");
+
+
+     //$('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').css("background-color","grey");
+
+        $('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').empty();
+
+    });
 
     });
 

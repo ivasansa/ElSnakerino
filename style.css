@@ -9,8 +9,15 @@ table td{
 }
 td {
     background-color: black;
+    width: 4%;
+    height: 4%;
 }
 
 #2 #2 {
     background-color: green;
+}
+
+i {
+    color: red;
+    margin-left: 5px;
 }
