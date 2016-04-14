@@ -1,5 +1,5 @@
 //var socket = io.connect('http://192.168.1.139:3000');
-var socket = io.connect('http://localhost:3001');
+var socket = io.connect('http://localhost:3000');
 
 function createTable(){
 	mytable = $('<table></table>').attr({ id: "basicTable" });
@@ -20,15 +20,29 @@ function createTable(){
 $(document).ready(function(){
     createTable();
     $("#snake").hide();
-    $("#ou").hide();
+
+    socket.on('topTen', function (data) {
+        console.log(data.u);
+        for(var i = 0; i < data.u.length; ++i){
+            $("#ousers").append("<li>"+data.u[i]+" punts</li>");
+        }
+    });
+
+
+//    $("#ou").hide();
     $("form").submit(function(){
         var user = $('#user').val();
 
         socket.emit('reg', {u: user});
         $("#formulari").hide();
         $("#snake").show();
-        $("#ou").show();
+//        $("#ou").show();
         return false;
+    });
+
+    socket.on('pinta', function (data) {
+        $('tr:nth-of-type('+(data.u.oldPos.y + 1)+') td:nth-of-type('+(data.u.oldPos.x + 1)+')').css("background-color","black");
+         $('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').css("background-color",data.u.color);
     });
 
     socket.on('online', function (data) {
@@ -73,6 +87,15 @@ $(document).ready(function(){
 
     });
 
+    socket.on('muerte', function (data) {
+//        console.log("OLD: "+data.u.oldPos.x+" "+data.u.oldPos.y);
+        console.log("muerte");
+
+     $('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').css("background-color","black");
+
+
+    });
+
     socket.on('pintaManzana', function (data) {
 //        console.log("NEW: "+data.u.pos.x+" "+data.u.pos.y);
 
@@ -90,6 +113,13 @@ $(document).ready(function(){
      //$('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').css("background-color","grey");
 
         $('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').empty();
+
+    });
+
+    socket.on('youDied', function (data) {
+//        console.log("muerte");
+
+        location.reload();
 
     });
 
