@@ -9,8 +9,8 @@ table td{
 }
 td {
     background-color: black;
-    width: 4%;
-    height: 4%;
+    width: 5%;
+    height: 5%;
 }
 
 #2 #2 {
@@ -20,4 +20,8 @@ td {
 i {
     color: red;
     margin-left: 5px;
+}
+
+#onusers {
+    font-weight: bold;
 }

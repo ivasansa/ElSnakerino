@@ -1,5 +1,5 @@
 //var socket = io.connect('http://192.168.1.139:3000');
-var socket = io.connect('http://localhost:3000');
+var socket = io.connect('http://172.20.17.139:3000');
 
 function createTable(){
 	mytable = $('<table></table>').attr({ id: "basicTable" });
@@ -47,6 +47,8 @@ $(document).ready(function(){
 
     socket.on('online', function (data) {
         console.log('CLIENT -> dades rebudes del servidor->' + data.u.nom);
+        $("#onusers").append("<li id='"+data.u.nom+"'>"+data.u.nom+"</li>").css("color",data.u.color);
+
 
         $(document).keydown(function(e) {
 //            console.log(data.u.index);
@@ -109,10 +111,15 @@ $(document).ready(function(){
     socket.on('borraManzana', function (data) {
         console.log("borrar manzana");
 
-
-     //$('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').css("background-color","grey");
-
         $('tr:nth-of-type('+(data.u.pos.y + 1)+') td:nth-of-type('+(data.u.pos.x + 1)+')').empty();
+
+    });
+
+    socket.on('enviarPunt', function (data) {
+        console.log("borrar manzana");
+
+        $("#"+data.u.nom).remove();
+        $("#onusers").append("<li id='"+data.u.nom+"'>"+data.u.nom+" "+data.u.punt+"</li>");
 
     });
 

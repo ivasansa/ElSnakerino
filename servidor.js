@@ -89,6 +89,7 @@ function hayManzana(socket,u){
                 console.log(listaUsers[u.index].punt);
                 out = i;
                 enviarMissatges(socket,m,"borraManzana");
+                enviarMissatges(socket,u,"enviarPunt");
             }
         }
         if(out != -1)listaManzanas.splice(out,1);
@@ -154,7 +155,7 @@ function enviarMissatges(socket,data, emitS){
 //    socket.broadcast.emit(emitS, {
 //        u: data
 //    });
- } else if(emitS == "pinta" || emitS == "pintaManzana" || emitS == "borraManzana"){
+ } else if(emitS == "pinta" || emitS == "pintaManzana" || emitS == "borraManzana" || emitS == "enviarPunt"){
 //     console.log(data);
      socket.emit(emitS, {
         u: data
